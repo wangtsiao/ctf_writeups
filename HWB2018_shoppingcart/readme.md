@@ -51,3 +51,11 @@ return __readfsqword(0x28u) ^ v4;
 接下来还有一种利用思路，该程序使用fgets进行读入，在第一次调用 `fgets` 时，会为 `fp` 参数的 `_IO_buf_base` 分配一块内存用于暂存用户发过来的数据，这块缓冲区是在堆区的顶部。结合`null by one`漏洞，往 `money_ctx_array[19]` 的 第 `9` 个字节写 `\x00` ，通过改 `currency_type` 的最后一项可以让 `products_ptr_array` 第一项的第一个字节为 `\x00`，当 `products_ptr_array[0]` 的指针的最低字节被置 `\x00` 后，会落入 `stdin` 的 `_IO_buf_base` 里面， 通过往程序发送有效地址数据，实现任意地址读写，这里修改`__free_hook`为`system`。
 
 这里是以上思路的[exploit2.py](./exp_use_fgets.py)
+
+### 支持与联系
+
+我是一名普普通通的`Bachelor`学生，为了强化理解学习的知识，所以开始了我漫长的自学道路，你在这个网页看到的所有内容，都是我在网上探索，自学而来的。如果觉得本文档对你的学习有帮助，也谢谢`star`本仓库。联系到我有很多种方式，欢迎大家用各种途径留言，有时间的话，我会尽量回复你的留言或问题。以下是几种可以讨论的方式:
+
+- Emalil: wang.qi.ao@qq.com
+- Github: https://github.com/wangtsiao
+
