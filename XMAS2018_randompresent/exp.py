@@ -3,7 +3,7 @@ from pwn import *
 fname = "./chall"
 elf = ELF(fname, checksec=False)
 context.arch = elf.arch
-context.terminal = ['tmux', 'splitw', '-h']
+# context.terminal = ['tmux', 'splitw', '-h']
 
 if args.REMOTE:
     io = remote("ip", 0000)
