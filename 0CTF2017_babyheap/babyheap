@@ -1,0 +1,18 @@
+# 0CTF_babyheap
+
+### 题目概述：
+
+在`fill`函数中，存在任意字节的溢出，此外程序使用`calloc`作为分配函数，每次分配都会将内存置零，这意味着无法使用`free--unsortedbin--malloc--show`的方法泄漏`libc`地址，需要考虑其他方法。
+
+### 利用思路：
+
+1、通过覆盖堆块的`size`位构造出`overlap`，以此泄漏`libc`地址，如下图所示，注意在释放内存的时候需要伪造下一块内存的`size`位。
+
+![image-20210721170036932](readme.assets/image-20210721170036932-6858039.png)
+
+2、释放`0x100`的堆块，`libc`的地址将被写入，此时打印第二个堆块即可泄漏。
+
+3、接下来通过`fastbin attack`修改`__malloc_hook`。
+
+这里是[exploit.py](./exp.py)
+
